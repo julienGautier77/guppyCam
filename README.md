@@ -3,7 +3,8 @@ guppyCam  module is a Python user interface for allied Vision's camera based on 
 
 https://github.com/julienGautier77/guppyCam
 
-install aliiedVision SDK (https://www.alliedvision.com/en/products/software.html)
+install alliedVision SDK (https://www.alliedvision.com/en/products/software.html)
+test on windows only
 
 ## Requirements
 *   python 3.x
