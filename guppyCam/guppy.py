@@ -30,7 +30,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 import sys,time
 import numpy as np
-import pathlib
+import pathlib,os
 
 
 
@@ -58,10 +58,19 @@ class GUPPY(QWidget):
         
         super(GUPPY, self).__init__()
         p = pathlib.Path(__file__)
+        print (p)
         self.conf=QtCore.QSettings(str(p.parent / 'confCCD.ini'), QtCore.QSettings.IniFormat)
-        self.icon=str(p.parent) + '/icons/'
+        sepa=os.sep
+        self.icon=str(p.parent) + sepa+'icons'+sepa
         self.setWindowIcon(QIcon(self.icon+'LOA.png'))
         self.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
+        self.iconPlay=self.icon+'Play.svg'
+        self.iconStop=self.icon+'Stop.svg'
+        self.iconPlay=pathlib.Path(self.iconPlay)
+        self.iconPlay=pathlib.PurePosixPath(self.iconPlay)
+        self.iconStop=pathlib.Path(self.iconStop)
+        self.iconStop=pathlib.PurePosixPath(self.iconStop)
+        
         self.nbcam=cam
         self.initCam()
         self.setup()
@@ -131,12 +140,12 @@ class GUPPY(QWidget):
         self.runButton=QPushButton(self)
         self.runButton.setMaximumWidth(60)
         self.runButton.setMinimumHeight(60)
-        self.runButton.setStyleSheet("QPushButton:!pressed{border-image: url(%s);background-color: rgb(0, 0, 0,0) ;border-color: green;}""QPushButton:pressed{image: url(%s);background-color: rgb(0, 0, 0,0) ;border-color: rgb(0, 0, 0)}"% (self.icon+'Play.svg',self.icon+'Play.svg') )
+        self.runButton.setStyleSheet("QPushButton:!pressed{border-image: url(%s);background-color: rgb(0, 0, 0,0) ;border-color: green;}""QPushButton:pressed{image: url(%s);background-color: rgb(0, 0, 0,0) ;border-color: rgb(0, 0, 0)}"% (self.iconPlay,self.iconPlay) )
         self.stopButton=QPushButton(self)
         
         self.stopButton.setMaximumWidth(60)
         self.stopButton.setMinimumHeight(60)
-        self.stopButton.setStyleSheet("QPushButton:!pressed{border-image: url(%s);background-color: gray ;border-color: rgb(0, 0, 0,0);}""QPushButton:pressed{image: url(%s);background-color: gray ;border-color: rgb(0, 0, 0)}"% (self.icon+'Stop.svg',self.icon+'Stop.svg') )
+        self.stopButton.setStyleSheet("QPushButton:!pressed{border-image: url(%s);background-color: gray ;border-color: rgb(0, 0, 0,0);}""QPushButton:pressed{image: url(%s);background-color: gray ;border-color: rgb(0, 0, 0)}"% (self.iconStop,self.iconStop) )
         self.stopButton.setEnabled(False)
         
         hbox1.addWidget(self.runButton)
@@ -295,10 +304,10 @@ class GUPPY(QWidget):
         ''' start the acquisition thread
         '''
         self.runButton.setEnabled(False)
-        self.runButton.setStyleSheet("QPushButton:!pressed{border-image: url(%s);background-color: gray ;border-color: rgb(0, 0, 0,0);}""QPushButton:pressed{image: url(%s);background-color: gray ;border-color: rgb(0, 0, 0)}"%(self.icon+'Play.svg',self.icon+'Play.svg'))
+        self.runButton.setStyleSheet("QPushButton:!pressed{border-image: url(%s);background-color: gray ;border-color: rgb(0, 0, 0,0);}""QPushButton:pressed{image: url(%s);background-color: gray ;border-color: rgb(0, 0, 0)}"%(self.iconPlay,self.iconPlay))
         
         self.stopButton.setEnabled(True)
-        self.stopButton.setStyleSheet("QPushButton:!pressed{border-image: url(%s);background-color: rgb(0, 0, 0,0) ;border-color: rgb(0, 0, 0,0);}""QPushButton:pressed{image: url(%s);background-color: rgb(0, 0, 0,0) ;border-color: rgb(0, 0, 0)}"%(self.icon+'Stop.svg',self.icon+'Stop.svg') )
+        self.stopButton.setStyleSheet("QPushButton:!pressed{border-image: url(%s);background-color: rgb(0, 0, 0,0) ;border-color: rgb(0, 0, 0,0);}""QPushButton:pressed{image: url(%s);background-color: rgb(0, 0, 0,0) ;border-color: rgb(0, 0, 0)}"%(self.iconStop,self.iconStop) )
         
         self.trigg.setEnabled(False)
         self.threadRunAcq=ThreadRunAcq(cam0=self.cam0,itrig=self.itrig,LineTrigger=self.LineTrigger)
@@ -316,9 +325,9 @@ class GUPPY(QWidget):
             self.camIsRunnig=False
             
         self.runButton.setEnabled(True)
-        self.runButton.setStyleSheet("QPushButton:!pressed{border-image: url(%s);background-color: rgb(0, 0, 0,0) ;border-color: rgb(0, 0, 0,0);}""QPushButton:pressed{image: url(%s);background-color: rgb(0, 0, 0,0) ;border-color: rgb(0, 0, 0)}"%(self.icon+'Play.svg',self.icon+'Play.svg'))
+        self.runButton.setStyleSheet("QPushButton:!pressed{border-image: url(%s);background-color: rgb(0, 0, 0,0) ;border-color: rgb(0, 0, 0,0);}""QPushButton:pressed{image: url(%s);background-color: rgb(0, 0, 0,0) ;border-color: rgb(0, 0, 0)}"%(self.iconPlay,self.iconPlay))
         self.stopButton.setEnabled(False)
-        self.stopButton.setStyleSheet("QPushButton:!pressed{border-image: url(%s);background-color: gray ;border-color: rgb(0, 0, 0,0);}""QPushButton:pressed{image: url(%s);background-color: gray ;border-color: rgb(0, 0, 0)}"%(self.icon+'Stop.svg',self.icon+'Stop.svg') )
+        self.stopButton.setStyleSheet("QPushButton:!pressed{border-image: url(%s);background-color: gray ;border-color: rgb(0, 0, 0,0);}""QPushButton:pressed{image: url(%s);background-color: gray ;border-color: rgb(0, 0, 0)}"%(self.iconStop,self.icon+self.iconStop) )
         
         self.trigg.setEnabled(True)
         
