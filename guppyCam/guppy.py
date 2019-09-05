@@ -54,11 +54,11 @@ import qdarkstyle
 class GUPPY(QWidget):
     '''GUPPY class for allied vision Camera
     '''
-    def __init__(self,cam='camDefault'):
+    def __init__(self,cam='camDefault',confVisu=None):
         
         super(GUPPY, self).__init__()
         p = pathlib.Path(__file__)
-        print (p)
+        #print (p)
         self.conf=QtCore.QSettings(str(p.parent / 'confCCD.ini'), QtCore.QSettings.IniFormat)
         sepa=os.sep
         self.icon=str(p.parent) + sepa+'icons'+sepa
@@ -70,7 +70,7 @@ class GUPPY(QWidget):
         self.iconPlay=pathlib.PurePosixPath(self.iconPlay)
         self.iconStop=pathlib.Path(self.iconStop)
         self.iconStop=pathlib.PurePosixPath(self.iconStop)
-        
+        self.confVisu=confVisu
         self.nbcam=cam
         self.initCam()
         self.setup()
@@ -137,7 +137,7 @@ class GUPPY(QWidget):
         self.camName=QLabel(self.ccdName,self)
         self.camName.setAlignment(Qt.AlignCenter)
         
-        self.camName.setStyleSheet('font :bold  30pt;color: white')
+        self.camName.setStyleSheet('font :bold  14pt;color: white')
         vbox1.addWidget(self.camName)
         
         hbox1=QHBoxLayout() # horizontal layout pour run et stop
@@ -223,7 +223,7 @@ class GUPPY(QWidget):
         hMainLayout=QHBoxLayout()
         hMainLayout.addWidget(cameraWidget)
         
-        self.visualisation=SEE() ## Widget for visualisation and tools 
+        self.visualisation=SEE(confpath=self.confVisu) ## Widget for visualisation and tools  self.confVisu permet d'avoir plusieurs camera et donc plusieurs fichier ini de visualisation
         
         vbox2=QVBoxLayout() 
         vbox2.addWidget(self.visualisation)
@@ -385,9 +385,9 @@ class ThreadRunAcq(QtCore.QThread):
     def stopThreadRunAcq(self):
         #self.cam0.send_trigger()
         self.stopRunAcq=True
-#        self.cam0.feature('TriggerSource').value='Software'
-        self.cam0.run_feature_command('TriggerSoftware')
-#        self.cam0.feature('TriggerSource').value=self.LineTrigger
+        #self.cam0.feature('TriggerSource').value='Software'
+        #self.cam0.run_feature_command('TriggerSoftware')
+        #self.cam0.feature('TriggerSource').value=self.LineTrigger
         self.cam0.run_feature_command ('AcquisitionAbort')
             
     
@@ -395,7 +395,8 @@ if __name__ == "__main__":
     
     appli = QApplication(sys.argv) 
     appli.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
-    e = GUPPY('cam1')  
+    pathVisu='C:/Users/loa/Desktop/Python/guppyCam/guppyCam/confVisuFootPrint.ini'
+    e = GUPPY(cam='cam1',confVisu=pathVisu)  
     e.show()
     appli.exec_()       
     
