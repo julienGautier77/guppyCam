@@ -19,7 +19,7 @@ and comment the line (?)(?)
 @author: juliengautier
 version : 2019.3
 """
-__version__='Guppy_2019.3'
+__version__='Guppy_2019.9'
 __author__='julien Gautier'
 version=__version__
 
@@ -121,13 +121,17 @@ class GUPPY(QWidget):
             self.cam0.feature('Gain').value=int(self.conf.value(self.nbcam+"/gain"))
             self.cam0.feature('TriggerMode').value='Off'
             self.cam0.feature('TriggerActivation').value='RisingEdge'
-            self.cam0.feature('TriggerSelector').value='FrameStart'
+            #self.cam0.feature('TriggerSelector').value='FrameStart'
             self.cam0.feature('TriggerSource').value='Software'
         
         
     def setup(self):  
         """ user interface definition: 
         """
+        
+        cameraWidget=QWidget()
+        
+        vbox1=QVBoxLayout() 
         vbox1=QVBoxLayout() 
        
         self.camName=QLabel(self.ccdName,self)
@@ -213,9 +217,11 @@ class GUPPY(QWidget):
         vbox1.addWidget(self.TrigSoft)
         
         vbox1.addStretch(1)
+        cameraWidget.setLayout(vbox1)
+        cameraWidget.setMinimumSize(150,200)
+        cameraWidget.setMaximumSize(200,900)
         hMainLayout=QHBoxLayout()
-        hMainLayout.addLayout(vbox1)
-        
+        hMainLayout.addWidget(cameraWidget)
         
         self.visualisation=SEE() ## Widget for visualisation and tools 
         
@@ -327,7 +333,7 @@ class GUPPY(QWidget):
         self.runButton.setEnabled(True)
         self.runButton.setStyleSheet("QPushButton:!pressed{border-image: url(%s);background-color: rgb(0, 0, 0,0) ;border-color: rgb(0, 0, 0,0);}""QPushButton:pressed{image: url(%s);background-color: rgb(0, 0, 0,0) ;border-color: rgb(0, 0, 0)}"%(self.iconPlay,self.iconPlay))
         self.stopButton.setEnabled(False)
-        self.stopButton.setStyleSheet("QPushButton:!pressed{border-image: url(%s);background-color: gray ;border-color: rgb(0, 0, 0,0);}""QPushButton:pressed{image: url(%s);background-color: gray ;border-color: rgb(0, 0, 0)}"%(self.iconStop,self.icon+self.iconStop) )
+        self.stopButton.setStyleSheet("QPushButton:!pressed{border-image: url(%s);background-color: gray ;border-color: rgb(0, 0, 0,0);}""QPushButton:pressed{image: url(%s);background-color: gray ;border-color: rgb(0, 0, 0)}"%(self.iconStop,self.iconStop) )
         
         self.trigg.setEnabled(True)
         
@@ -379,9 +385,9 @@ class ThreadRunAcq(QtCore.QThread):
     def stopThreadRunAcq(self):
         #self.cam0.send_trigger()
         self.stopRunAcq=True
-        self.cam0.feature('TriggerSource').value='Software'
+#        self.cam0.feature('TriggerSource').value='Software'
         self.cam0.run_feature_command('TriggerSoftware')
-        self.cam0.feature('TriggerSource').value=self.LineTrigger
+#        self.cam0.feature('TriggerSource').value=self.LineTrigger
         self.cam0.run_feature_command ('AcquisitionAbort')
             
     
@@ -389,7 +395,7 @@ if __name__ == "__main__":
     
     appli = QApplication(sys.argv) 
     appli.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
-    e = GUPPY('camDefault')  
+    e = GUPPY('cam1')  
     e.show()
     appli.exec_()       
     
