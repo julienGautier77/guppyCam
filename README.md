@@ -1,7 +1,6 @@
 # guppyCam
-guppyCam  module is a Python user interface for allied Vision's camera based on pymba
-
-https://github.com/julienGautier77/guppyCam
+guppyCam  module is a Python user interface for allied Vision's camera based on pymba : 
+https://github.com/morefigs/pymba.git
 
 install alliedVision SDK (https://www.alliedvision.com/en/products/software.html)
 
