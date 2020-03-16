@@ -396,7 +396,7 @@ if __name__ == "__main__":
     appli = QApplication(sys.argv) 
     appli.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
     pathVisu='C:/Users/loa/Desktop/Python/guppyCam/guppyCam/confVisuFootPrint.ini'
-    e = GUPPY(cam='cam1',confVisu=pathVisu)  
+    e = GUPPY()  
     e.show()
     appli.exec_()       
     
